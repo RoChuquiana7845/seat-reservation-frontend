@@ -4,13 +4,17 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from '@/hooks/useAuth';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
-  const { isAuthenticated, loading} = useAuth();
+  const { isAuthenticated, loading } = useAuth();
+  const pathname = usePathname();
 
   if (loading) {
     return null; 
   }
+
+  const isSignupPage = pathname === "/auth/signup";
 
   return (
     <div className="navbar bg-base-100">
@@ -21,9 +25,15 @@ export default function Navbar() {
       </div>
       {!isAuthenticated ? (
         <div className="flex-none">
-          <Link href="/auth/signup">
-            <span className="btn btn-primary">Sign Up</span>
-          </Link>
+          {isSignupPage ? (
+            <Link href="/auth/login">
+              <span className="btn btn-primary">Sign In</span>
+            </Link>
+          ) : (
+            <Link href="/auth/signup">
+              <span className="btn btn-primary">Sign Up</span>
+            </Link>
+          )}
         </div>
       ) : (
         <div className="flex-none">
@@ -100,7 +110,7 @@ export default function Navbar() {
               <div className="w-10 rounded-full">
                 <Image
                   alt="User avatar"
-                  src="/icons/user-avatar.webp" // Asegúrate de que esta imagen esté en tu carpeta public/icons/
+                  src="/icons/user-avatar.webp" 
                   width={40}
                   height={40}
                   className="rounded-full"
@@ -118,7 +128,7 @@ export default function Navbar() {
                 </a>
               </li>
               <li><a>Settings</a></li>
-              <li><a>Logout</a></li> 
+              <li><a>Logout</a></li>
             </ul>
           </div>
         </div>
