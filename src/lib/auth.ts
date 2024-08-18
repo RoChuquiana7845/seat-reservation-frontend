@@ -1,6 +1,41 @@
 import api from "./api";
 import { AxiosError } from "axios";
 
+// Función para registrarse (Sign Up)
+export const signup = async (userData: {
+  username: string;
+  email: string;
+  password: string;
+}) => {
+  try {
+    const response = await api.post("/api/auth/signup", userData);
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      throw error.response.data;
+    } else {
+      throw new Error("An unexpected error occurred");
+    }
+  }
+};
+
+// Función para iniciar sesión (Login)
+export const login = async (credentials: {
+  email: string;
+  password: string;
+}) => {
+  try {
+    const response = await api.post("/api/auth/login", credentials);
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      throw error.response.data;
+    } else {
+      throw new Error("An unexpected error occurred");
+    }
+  }
+};
+
 // Función para verificar el estado de autenticación (Check Auth Status)
 export const checkAuthStatus = async () => {
   try {
@@ -15,25 +50,26 @@ export const checkAuthStatus = async () => {
       if (axiosError.response.status === 401) {
         return false; // El usuario no está autenticado
       }
-      console.error("Error response:", axiosError.response.data);
+      console.error('Error response:', axiosError.response.data);
       throw axiosError.response.data;
     } else {
-      console.error("Unexpected error:", axiosError.message);
+      console.error('Unexpected error:', axiosError.message);
       throw new Error("An unexpected error occurred");
     }
   }
 };
 
-// Función para obtener el usuario actual (Get Current User)
-export const getCurrentUser = async () => {
+
+// Función para cerrar sesión (Logout)
+export const logout = async () => {
   try {
-    const response = await api.get('/api/auth/user');
-    return response.data;
+    await api.post("/auth/logout");
+    window.location.href = "/auth/login"; // Redirige al usuario al login después de cerrar sesión
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
       throw error.response.data;
     } else {
-      throw new Error('An unexpected error occurred');
+      throw new Error("An unexpected error occurred");
     }
   }
 };
