@@ -2,15 +2,21 @@ import { useState, useEffect } from 'react';
 import { checkAuthStatus } from '@/lib/auth';
 
 export const useAuth = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const verifyAuth = async () => {
       try {
-        await checkAuthStatus(); // Verifica si el usuario está autenticado
-        setIsAuthenticated(true);
+        const token = localStorage.getItem('authToken'); // O obtenerlo de una cookie
+        if (token) {
+          const authStatus = await checkAuthStatus();
+          setIsAuthenticated(authStatus);
+        } else {
+          setIsAuthenticated(false);
+        }
       } catch (error) {
+        console.error('Error checking auth status:', error);
         setIsAuthenticated(false);
       } finally {
         setLoading(false);
@@ -20,5 +26,5 @@ export const useAuth = () => {
     verifyAuth();
   }, []);
 
-  return { isAuthenticated, loading };
+  return { isAuthenticated, loading, setIsAuthenticated };
 };

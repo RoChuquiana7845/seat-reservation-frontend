@@ -1,20 +1,34 @@
-"use client";
+'use client';
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from '@/hooks/useAuth';
-import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const { isAuthenticated, loading } = useAuth();
-  const pathname = usePathname();
+  const [initialCheck, setInitialCheck] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      // Estamos en el servidor, no hacemos nada
+      return;
+    }
+
+    if (!loading && !initialCheck) {
+      const currentPath = window.location.pathname;
+      if (!isAuthenticated && currentPath !== '/auth/login' && currentPath !== '/auth/signup') {
+        window.location.href = '/auth/login';
+      }
+      setInitialCheck(true);
+    }
+  }, [loading, isAuthenticated, initialCheck]);
 
   if (loading) {
     return null; 
   }
 
-  const isSignupPage = pathname === "/auth/signup";
+  const isSignupPage = typeof window !== 'undefined' && window.location.pathname === "/auth/signup";
 
   return (
     <div className="navbar bg-base-100">

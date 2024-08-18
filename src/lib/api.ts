@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3004',
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3004/',
   withCredentials: true, 
 });
 
@@ -23,7 +23,7 @@ api.interceptors.response.use(
   (error) => {
     // Manejar errores de manera centralizada
     if (error.response && error.response.status === 401) {
-      window.location.href = '/login';
+      return null;
     }
     return Promise.reject(error);
   }

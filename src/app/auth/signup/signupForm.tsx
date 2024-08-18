@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signup } from '@/lib/auth';
 import Image from 'next/image';
+import Button from '@/components/Button';
 
 const SignupForm = () => {
   const [username, setUsername] = useState('');
@@ -19,9 +20,9 @@ const SignupForm = () => {
     try {
       const data = await signup({ username, email, password });
       console.log('Signup successful:', data);
-      router.push('/auth/login'); // Redirige al usuario al login después de registrarse
+      router.push('/auth/login'); 
     } catch (err: any) {
-      setError('Signup failed. Please try again.');
+      setError(err.message);
       console.error('Signup error:', err);
     }
   };
@@ -73,12 +74,7 @@ const SignupForm = () => {
           />
         </label>
 
-        <button
-          type="submit"
-          className="block w-full bg-indigo-600 mt-5 py-2 rounded-2xl hover:bg-indigo-700 hover:-translate-y-1 transition-all duration-500 text-white font-semibold mb-2"
-        >
-          Sign Up
-        </button>
+        <Button type="submit">Sign Up</Button>
 
         <div className="flex justify-between mt-4">
           <a href="/auth/login" className="text-sm ml-2 hover:text-blue-500 cursor-pointer hover:-translate-y-1 duration-500 transition-all">
