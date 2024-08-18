@@ -60,3 +60,17 @@ export const logout = async () => {
     }
   }
 };
+
+// Función para obtener el usuario actual (Get Current User)
+export const getCurrentUser = async () => {
+  try {
+    const response = await api.get('/api/auth/user');
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      throw error.response.data;
+    } else {
+      throw new Error('An unexpected error occurred');
+    }
+  }
+};
