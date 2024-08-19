@@ -52,9 +52,9 @@ export const addItemToCart = async(token: string, quantity: number, cartId: stri
     }
 }
 
-export const removeItemFromCart = async(productId: string) => {
+export const removeItemFromCart = async(cartItemID: string) => {
     try {
-        const response = await api.delete(`/cart-items/${productId}`);
+        const response = await api.delete(`/cart-items/${cartItemID}`);
         return response.data;
     } catch (error) {
         if (error instanceof AxiosError && error.response) {
