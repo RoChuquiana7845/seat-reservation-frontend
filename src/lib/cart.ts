@@ -18,9 +18,9 @@ export const createCart = async (token: string) => {
     }
 }
 
-export const getCart = async(userId : string) => {
+export const getCart = async(cartId : string) => {
     try {
-        const response = await api.get(`api/cart/${userId}`);
+        const response = await api.get(`api/cart/${cartId}`);
         return response.data;
     } catch (error) {
         if (error instanceof AxiosError && error.response) {
