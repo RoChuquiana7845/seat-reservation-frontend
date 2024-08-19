@@ -14,10 +14,13 @@ const SignupForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(username, email, password)
     setError('');
 
     try {
+      console.log(username, email, password)
       const data = await signup({ username, email, password });
+      console.log(data)
       console.log('Signup successful:', data);
       router.push('/auth/login'); // Redirige al usuario al login después de registrarse
     } catch (err: any) {

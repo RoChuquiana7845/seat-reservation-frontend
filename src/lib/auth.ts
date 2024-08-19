@@ -38,7 +38,7 @@ export const checkAuthStatus = async () => {
     if (error instanceof AxiosError && error.response) {
       if (error.response.status === 401) {
         // Redirigir al login si la respuesta es 401
-        window.location.href = '/login';
+        console.log('no hay acceso')
       }
       throw error.response.data;
     } else {

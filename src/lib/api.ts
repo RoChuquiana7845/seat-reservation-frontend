@@ -1,7 +1,8 @@
 import axios from 'axios';
+import router from 'next/router';
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3004',
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3004/api',
   withCredentials: true, 
 });
 
@@ -23,7 +24,7 @@ api.interceptors.response.use(
   (error) => {
     // Manejar errores de manera centralizada
     if (error.response && error.response.status === 401) {
-      window.location.href = '/login';
+      router.push('/login');
     }
     return Promise.reject(error);
   }
