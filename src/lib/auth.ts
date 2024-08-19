@@ -39,7 +39,7 @@ export const login = async (credentials: {
 // Función para verificar el estado de autenticación (Check Auth Status)
 export const checkAuthStatus = async (token:string) => {
   try {
-    const response = await api.get("/api/auth/check-status",{  headers: { Authorization: `Bearer ${token}` }} );
+    const response = await api.get("/api/auth/check-status", {headers: { Authorization: `Bearer ${token}`}});
     return response.data; // Asegúrate de que el backend devuelve este campo
   } catch (error) {
     const axiosError = error as AxiosError; // Aquí usamos una type assertion
@@ -70,3 +70,16 @@ export const logout = async () => {
     }
   }
 };
+
+export const getCurrentUser = async (token:string) => {
+  try {
+    const response = await api.get("/api/auth/user", {headers: { Authorization: `Bearer ${token}`}});
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      throw error.response.data;
+    } else {
+      throw new Error("An unexpected error occurred");
+    }
+  }
+}

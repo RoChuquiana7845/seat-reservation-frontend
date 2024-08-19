@@ -1,10 +1,12 @@
 import api from "./api";
 import { AxiosError } from "axios";
 
-export const createCart = async(userId : string) => {
+export const createCart = async (token: string) => {
     try {
-        const response = await api.post("api/cart", {
-            id: userId
+        const response = await api.post("api/cart/", {}, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
         });
         return response.data;
     } catch (error) {
