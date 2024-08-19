@@ -1,5 +1,7 @@
+"use client";
 import { useState, useEffect } from 'react';
 import { checkAuthStatus } from '@/lib/auth';
+import Cookies from 'js-cookie'
 
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
@@ -8,10 +10,11 @@ export const useAuth = () => {
   useEffect(() => {
     const verifyAuth = async () => {
       try {
-        const token = localStorage.getItem('authToken'); // O obtenerlo de una cookie
+        const token = Cookies.get('jwt')
         if (token) {
-          const authStatus = await checkAuthStatus();
-          setIsAuthenticated(authStatus);
+          const authStatus = await checkAuthStatus(token);
+          setIsAuthenticated(true);
+          return authStatus
         } else {
           setIsAuthenticated(false);
         }

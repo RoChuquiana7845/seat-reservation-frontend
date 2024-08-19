@@ -1,10 +1,12 @@
 import api from "./api";
 import { AxiosError } from "axios";
 
-export const createCart = async(userId : string) => {
+export const createCart = async (token: string) => {
     try {
-        const response = await api.post("api/cart", {
-            id: userId
+        const response = await api.post("/cart/", {}, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
         });
         return response.data;
     } catch (error) {
@@ -16,9 +18,9 @@ export const createCart = async(userId : string) => {
     }
 }
 
-export const getCart = async(userId : string) => {
+export const getCart = async(cartId : string) => {
     try {
-        const response = await api.get(`api/cart/${userId}`);
+        const response = await api.get(`/cart/${cartId}`);
         return response.data;
     } catch (error) {
         if (error instanceof AxiosError && error.response) {
@@ -29,12 +31,16 @@ export const getCart = async(userId : string) => {
     }
 }
 
-export const addItemToCart = async(quantity: number, cartId: string, productId: string) => {
+export const addItemToCart = async(token: string, quantity: number, cartId: string, productId: string) => {
     try {
-        const response = await api.post("api/cart-items", {
+        const response = await api.post("/cart-items", {
             quantity,
             cart: cartId,
             product: productId
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
         });
         return response.data;
     } catch (error) {
@@ -48,7 +54,7 @@ export const addItemToCart = async(quantity: number, cartId: string, productId: 
 
 export const removeItemFromCart = async(productId: string) => {
     try {
-        const response = await api.delete(`api/cart-items/${productId}`);
+        const response = await api.delete(`/cart-items/${productId}`);
         return response.data;
     } catch (error) {
         if (error instanceof AxiosError && error.response) {
@@ -61,7 +67,7 @@ export const removeItemFromCart = async(productId: string) => {
 
 export const getCartItems = async(userId: string) => {
     try {
-        const response = await api.get(`api/cart/${userId}/items`);
+        const response = await api.get(`/cart/${userId}/items`);
         return response.data;
     } catch (error) {
         if (error instanceof AxiosError && error.response) {

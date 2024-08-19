@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 // Funcion para obtener todos los productos
 export const getProducts = async () => {
   try {
-    const response = await api.get("api/product");
+    const response = await api.get("/product");
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError;
@@ -15,7 +15,7 @@ export const getProducts = async () => {
 // Funcion para obtener un producto por su id
 export const getProductById = async (id: string) => {
   try {
-    const response = await api.get(`api/product/${id}`);
+    const response = await api.get(`/product/${id}`);
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError;

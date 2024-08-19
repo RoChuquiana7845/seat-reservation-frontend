@@ -19,8 +19,7 @@ const LoginForm = () => {
     setError("");
 
     try {
-      const data = await login({ email, password });
-      localStorage.setItem('authToken', data.token); // Guardar el token en localStorage
+      await login({ email, password });
       setIsAuthenticated(true);
       router.push("/"); // Redirige al usuario después de iniciar sesión
     } catch (err: any) {

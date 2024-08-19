@@ -1,38 +1,48 @@
 import { useState, useEffect } from 'react';
-import { getCart, createCart } from '@/lib/cart';
 import { getCurrentUser } from '@/lib/auth';
+import { getCart, createCart } from '@/lib/cart';
 import { AxiosError } from 'axios';
+import Cookies from 'js-cookie';
 
 export const useCart = () => {
-    const [cart, setCart] = useState([]);
+    const [cart, setCart] = useState<Cart | null>(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const initializeCart = async () => {
             try {
-                const user = await getCurrentUser();
-                if (!user) throw new Error('User not found');
-                const { id } = user;
-                let cartData;
-                try {
-                    cartData = await getCart(id);
-                } catch (error) {
-                    if (error instanceof AxiosError && error.response?.status === 404) {
-                        cartData = await createCart(id);
-                    } else {
-                        throw new Error('Error fetching cart');
+                const token = Cookies.get('jwt');
+                if (token) {
+                    const user = await getCurrentUser(token);
+                    if (!user) throw new Error('User not found');
+                    const { id } = user;
+                    let cartData;
+                    try {
+                        cartData = await getCart(id);
+                    } catch (error) {
+                        console.error("Error fetching cart:", error);
+                        if (error instanceof AxiosError) {
+                            cartData = await createCart(id);
+                        } else {
+                            throw new Error("Unexpected error occurred while fetching the cart");
+                        }
                     }
+                    setCart(cartData);
                 }
-                setCart(cartData);
             } catch (error) {
-                if (error instanceof AxiosError && error.response?.status === 404) {
-                    console.error(error.message || 'Error initializing cart');
+                if (error instanceof Error) {
+                    setError(error.message);
+                } else {
+                    setError('An unexpected error occurred');
                 }
+                console.error(error);
             } finally {
                 setLoading(false);
             }
         };
         initializeCart();
     }, []);
-    return { cart, loading };
+
+    return { cart, loading, error };
 };

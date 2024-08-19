@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ProductProps } from "@/types/index";
-
+import { ProductProps } from "@/props/product";
 
 export default function ProductCard({product} : {product: ProductProps}) {
     return (
