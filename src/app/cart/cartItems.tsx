@@ -1,7 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useCart } from "@/hooks/useCart";
-import { getCartItem } from "@/lib/cart";
+import {useEffect, useState} from "react";
+import {useCart} from "@/hooks/useCart";
+import {getCartItem} from "@/lib/cart";
 
 export default function CartListItems() {
     const { cart, loading } = useCart();
@@ -12,8 +12,7 @@ export default function CartListItems() {
             const fetchCartItems = async () => {
                 const items = await Promise.all(
                     cart.cartItems.map(async (item) => {
-                        const cartItem = await getCartItem(item.id);
-                        return cartItem;
+                        return await getCartItem(item.id);
                     })
                 );
                 setCartItems(items);
@@ -28,13 +27,12 @@ export default function CartListItems() {
 
     return (
         <div>
-            {cartItems.length > 0 ? (
-                <ul>
-
-                </ul>
-            ) : (
-                <div>No items in the cart</div>
-            )}
+            {cartItems.map((item) => (
+                <div key={item.id}>
+                    <h3>{item.product.name}</h3>
+                    <p>Quantity: {item.quantity}</p>
+                </div>
+            ))}
         </div>
     );
 }
