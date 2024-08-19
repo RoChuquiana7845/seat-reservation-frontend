@@ -5,7 +5,7 @@ import { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
 
 export const useCart = () => {
-    const [cart, setCart] = useState(null);
+    const [cart, setCart] = useState<Cart | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -14,11 +14,23 @@ export const useCart = () => {
             try {
                 const token = Cookies.get('jwt');
                 if (token) {
-                    let cartData = await createCart(token);
+                    const user = await getCurrentUser(token);
+                    if (!user) throw new Error('User not found');
+                    const { id } = user;
+                    let cartData;
+                    try {
+                        cartData = await getCart(id);
+                    } catch (error) {
+                        console.error("Error fetching cart:", error);
+                        if (error instanceof AxiosError) {
+                            cartData = await createCart(id);
+                        } else {
+                            throw new Error("Unexpected error occurred while fetching the cart");
+                        }
+                    }
                     setCart(cartData);
                 }
             } catch (error) {
-                // Capturar y manejar el error adecuadamente
                 if (error instanceof Error) {
                     setError(error.message);
                 } else {
@@ -26,12 +38,9 @@ export const useCart = () => {
                 }
                 console.error(error);
             } finally {
-                // Asegurarse de que el loading se detenga al final
                 setLoading(false);
             }
         };
-
-        // Ejecutar la inicialización del carrito al montar el componente
         initializeCart();
     }, []);
 
