@@ -4,10 +4,13 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from '@/hooks/useAuth';
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const { isAuthenticated, loading } = useAuth();
   const [initialCheck, setInitialCheck] = useState(false);
+  const router = useRouter();
+
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -18,11 +21,11 @@ export default function Navbar() {
     if (!loading && !initialCheck) {
       const currentPath = window.location.pathname;
       if (!isAuthenticated && currentPath !== '/auth/login' && currentPath !== '/auth/signup') {
-        window.location.href = '/auth/login';
+        router.push("/auth/login")
       }
       setInitialCheck(true);
     }
-  }, [loading, isAuthenticated, initialCheck]);
+  }, [loading, isAuthenticated, initialCheck, router]);
 
   if (loading) {
     return null; 

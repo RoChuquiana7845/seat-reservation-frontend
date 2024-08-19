@@ -6,6 +6,7 @@ import { login } from "@/lib/auth";
 import Image from "next/image";
 import Button from "@/components/Button";
 import { useAuth } from '@/hooks/useAuth';
+import Cookies from 'js-cookie'
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -20,7 +21,9 @@ const LoginForm = () => {
 
     try {
       const data = await login({ email, password });
-      localStorage.setItem('authToken', data.token); // Guardar el token en localStorage
+      console.log(data)
+      Cookies.set('token', data.jwt, { sameSite: 'none', secure: true });
+      console.log(Cookies.get('token')) 
       setIsAuthenticated(true);
       router.push("/"); // Redirige al usuario después de iniciar sesión
     } catch (err: any) {
