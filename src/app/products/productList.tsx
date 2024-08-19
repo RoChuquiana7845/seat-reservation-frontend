@@ -2,7 +2,7 @@
 
 import { getProducts } from "@/lib/product";
 import { useEffect, useState } from "react";
-import { ProductProps } from "@/types/index";
+import { ProductProps } from "@/props/product";
 import ProductCard from "./productCard";
 import ProductCardSkeleton from "@/components/skeletons/ProductCartSkeleton";
 

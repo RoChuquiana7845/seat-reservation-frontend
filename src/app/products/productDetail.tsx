@@ -20,10 +20,9 @@ export default function ProductDetail({ product }: { product: ProductProps }) {
             return;
         }
         try {
-            const cartId = cart.id;
             const token = Cookies.get('jwt');
             if (token) {
-                await addItemToCart(token, 1, cartId, product.id);
+                await addItemToCart(token, 1, cart.id, product.id);
                 console.log("Product added to cart successfully");
             }
         } catch (error) {
