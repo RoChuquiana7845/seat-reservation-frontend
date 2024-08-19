@@ -25,6 +25,7 @@ api.interceptors.response.use(
     // Manejar errores de manera centralizada
     if (error.response && error.response.status === 401) {
       router.push('/login');
+      return null;
     }
     return Promise.reject(error);
   }

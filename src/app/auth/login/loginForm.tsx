@@ -4,12 +4,15 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/lib/auth";
 import Image from "next/image";
+import Button from "@/components/Button";
+import { useAuth } from '@/hooks/useAuth';
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+  const { setIsAuthenticated } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,7 +20,8 @@ const LoginForm = () => {
 
     try {
       const data = await login({ email, password });
-      console.log("Login successful:", data);
+      localStorage.setItem('authToken', data.token); // Guardar el token en localStorage
+      setIsAuthenticated(true);
       router.push("/"); // Redirige al usuario después de iniciar sesión
     } catch (err: any) {
       setError("Login failed. Please try again.");
@@ -59,12 +63,7 @@ const LoginForm = () => {
           />
         </label>
 
-        <button
-          type="submit"
-          className="block w-full bg-indigo-600 mt-5 py-2 rounded-2xl hover:bg-indigo-700 hover:-translate-y-1 transition-all duration-500 text-white font-semibold mb-2"
-        >
-          Login
-        </button>
+        <Button type="submit">Login</Button>
 
         <div className="flex justify-between mt-4">
           <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer hover:-translate-y-1 duration-500 transition-all">Forgot Password?</span>
