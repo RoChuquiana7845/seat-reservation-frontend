@@ -18,9 +18,9 @@ export const createCart = async (token: string) => {
     }
 }
 
-export const getCart = async(cartId : string) => {
+export const getCart = async(userId : string) => {
     try {
-        const response = await api.get(`/cart/${cartId}`);
+        const response = await api.get(`/cart/user/${userId}`);
         return response.data;
     } catch (error) {
         if (error instanceof AxiosError && error.response) {
@@ -34,7 +34,7 @@ export const getCart = async(cartId : string) => {
 export const addItemToCart = async(token: string, quantity: number, cartId: string, productId: string) => {
     try {
         const response = await api.post("/cart-items", {
-            quantity,
+            quantity: quantity,
             cart: cartId,
             product: productId
         }, {
@@ -52,9 +52,9 @@ export const addItemToCart = async(token: string, quantity: number, cartId: stri
     }
 }
 
-export const removeItemFromCart = async(productId: string) => {
+export const removeItemFromCart = async(cartItemID: string) => {
     try {
-        const response = await api.delete(`/cart-items/${productId}`);
+        const response = await api.delete(`/cart-items/${cartItemID}`);
         return response.data;
     } catch (error) {
         if (error instanceof AxiosError && error.response) {
@@ -65,9 +65,9 @@ export const removeItemFromCart = async(productId: string) => {
     }
 }
 
-export const getCartItems = async(userId: string) => {
+export const getCartItem = async (cartItemId: string) => {
     try {
-        const response = await api.get(`/cart/${userId}/items`);
+        const response = await api.get(`/cart-items/${cartItemId}`);
         return response.data;
     } catch (error) {
         if (error instanceof AxiosError && error.response) {
