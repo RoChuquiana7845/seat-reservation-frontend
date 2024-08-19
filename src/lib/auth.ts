@@ -8,7 +8,7 @@ export const signup = async (userData: {
   password: string;
 }) => {
   try {
-    const response = await api.post("/auth/signup", userData);
+    const response = await api.post("/api/auth/signup", userData);
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
@@ -25,7 +25,7 @@ export const login = async (credentials: {
   password: string;
 }) => {
   try {
-    const response = await api.post("/auth/login", credentials);
+    const response = await api.post("/api/auth/login", credentials);
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
@@ -39,10 +39,8 @@ export const login = async (credentials: {
 // Función para verificar el estado de autenticación (Check Auth Status)
 export const checkAuthStatus = async (token:string) => {
   try {
-    const response = await api.get("/auth/check-status",{  headers: { Authorization: `Bearer ${token}` }} );
-    console.log(response)
-      console.log(response.data)
-      return response.data; // Asegúrate de que el backend devuelve este campo
+    const response = await api.get("/api/auth/check-status",{  headers: { Authorization: `Bearer ${token}` }} );
+    return response.data; // Asegúrate de que el backend devuelve este campo
   } catch (error) {
     const axiosError = error as AxiosError; // Aquí usamos una type assertion
     if (axiosError.response) {

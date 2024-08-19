@@ -10,12 +10,10 @@ export const useAuth = () => {
   useEffect(() => {
     const verifyAuth = async () => {
       try {
-        const token = Cookies.get('token')
-        console.log(token)
+        const token = Cookies.get('jwt')
         if (token) {
           const authStatus = await checkAuthStatus(token);
           setIsAuthenticated(true);
-          console.log(authStatus)
           return authStatus
         } else {
           setIsAuthenticated(false);
