@@ -8,9 +8,8 @@ import {useCart} from "@/hooks/useCart";
 import Cookies from "js-cookie";
 
 export default function ProductDetail({ product }: { product: ProductProps }) {
-    const { cart, loading, error } = useCart();
-    const handleAddToCart = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const { cart, loading } = useCart();
+    const handleAddToCart = async () => {
         if (loading) {
             console.log("Loading cart, please wait...");
             return;

@@ -1,7 +1,7 @@
 "use client";
-import {useEffect, useState} from "react";
-import {useCart} from "@/hooks/useCart";
-import {getCartItem} from "@/lib/cart";
+import { useEffect, useState } from "react";
+import { useCart } from "@/hooks/useCart";
+import { getCartItem } from "@/lib/cart";
 import CartItemCard from "@/app/cart/cartItemCard";
 
 export default function CartListItems() {
@@ -22,6 +22,10 @@ export default function CartListItems() {
         }
     }, [cart]);
 
+    const handleRemoveItem = (id: string) => {
+        setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+    };
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -29,7 +33,7 @@ export default function CartListItems() {
     return (
         <div>
             {cartItems.map((item) => (
-                <CartItemCard key={item.id} item={item} />
+                <CartItemCard key={item.id} item={item} onRemove={handleRemoveItem} />
             ))}
         </div>
     );
