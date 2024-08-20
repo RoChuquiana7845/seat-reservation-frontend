@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from "next/navigation";
+import { logout } from "@/lib/auth"; // Importa la función de logout
 
 export default function Navbar() {
   const { isAuthenticated, loading } = useAuth();
@@ -24,6 +25,14 @@ export default function Navbar() {
   if (loading) return null;
 
   const isSignupPage = typeof window !== 'undefined' && window.location.pathname === "/auth/signup";
+
+  const handleLogout = async () => {
+    try {
+      await logout(); // Llama a la función de logout
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   return (
       <nav className="navbar bg-base-100 shadow-md">
@@ -83,7 +92,7 @@ export default function Navbar() {
                       <Link href="/settings">Settings</Link>
                     </li>
                     <li>
-                      <button onClick={() => router.push("/auth/logout")}>Logout</button>
+                      <button onClick={handleLogout}>Logout</button> {/* Llama a handleLogout */}
                     </li>
                   </ul>
                 </div>

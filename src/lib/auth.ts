@@ -1,5 +1,7 @@
 import api from "./api";
 import { AxiosError } from "axios";
+import Cookies from 'js-cookie';
+
 
 // Función para registrarse (Sign Up)
 export const signup = async (userData: {
@@ -60,7 +62,8 @@ export const checkAuthStatus = async (token:string) => {
 // Función para cerrar sesión (Logout)
 export const logout = async () => {
   try {
-    await api.post("/auth/logout");
+    await api.post("/auth/logout"); // Llama al backend para realizar el logout
+    Cookies.remove('jwt_f'); // Elimina el token JWT de las cookies
     window.location.href = "/auth/login"; // Redirige al usuario al login después de cerrar sesión
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
@@ -70,6 +73,7 @@ export const logout = async () => {
     }
   }
 };
+
 
 export const getCurrentUser = async (token:string) => {
   try {
