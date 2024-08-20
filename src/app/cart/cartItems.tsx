@@ -2,6 +2,7 @@
 import {useEffect, useState} from "react";
 import {useCart} from "@/hooks/useCart";
 import {getCartItem} from "@/lib/cart";
+import CartItemCard from "@/app/cart/cartItemCard";
 
 export default function CartListItems() {
     const { cart, loading } = useCart();
@@ -28,10 +29,7 @@ export default function CartListItems() {
     return (
         <div>
             {cartItems.map((item) => (
-                <div key={item.id}>
-                    <h3>{item.product.name}</h3>
-                    <p>Quantity: {item.quantity}</p>
-                </div>
+                <CartItemCard key={item.id} item={item} />
             ))}
         </div>
     );
