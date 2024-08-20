@@ -21,12 +21,7 @@ export const useCart = () => {
                     try {
                         cartData = await getCart(id);
                     } catch (error) {
-                        console.error("Error fetching cart:", error);
-                        if (error instanceof AxiosError) {
-                            cartData = await createCart(id);
-                        } else {
-                            throw new Error("Unexpected error occurred while fetching the cart");
-                        }
+                        cartData = await createCart(token);
                     }
                     setCart(cartData);
                 }
