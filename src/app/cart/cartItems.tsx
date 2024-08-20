@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useCart } from "@/hooks/useCart";
+import { useCartContext } from "@/context/cartContext";
 import { getCartItem } from "@/lib/cart";
-import CartItemCard from "@/app/cart/cartItemCard";
+import CartItemCard from "./cartItemCard";
 
 export default function CartListItems() {
-    const { cart, loading } = useCart();
+    const { cart, loading, fetchCart } = useCartContext();
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
     useEffect(() => {
@@ -22,7 +22,9 @@ export default function CartListItems() {
         }
     }, [cart]);
 
-    const handleRemoveItem = (id: string) => {
+    const handleRemoveItem = async (id: string) => {
+        // Assuming there's a function to remove item from the cart
+        await fetchCart();
         setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
     };
 
