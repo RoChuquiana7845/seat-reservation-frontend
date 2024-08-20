@@ -24,9 +24,10 @@ export const getProductById = async (id: string) => {
 };
 
 // Función para crear un producto
-export const createProduct = async (productData: { name: string, price: number, description: string, stock: number }) => {
+export const createProduct = async (productData: { name: string, precio: number, description: string, stock: number }) => {
   try {
     const response = await api.post("/product", productData);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError;
@@ -35,7 +36,7 @@ export const createProduct = async (productData: { name: string, price: number, 
 };
 
 // **Función para actualizar un producto**
-export const updateProduct = async (id: string, productData: { name: string, price: number, description: string, stock: number }) => {
+export const updateProduct = async (id: string, productData: { name: string, precio: number, description: string, stock: number }) => {
   try {
     const response = await api.patch(`/product/${id}`, productData);
     return response.data;
