@@ -7,7 +7,7 @@ import Button from "@/components/Button";
 
 export default function ProductForm() {
   const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
+  const [precio, setPrice] = useState(0);
   const [description, setDescription] = useState("");
   const [stock, setStock] = useState(0);
   const [error, setError] = useState("");
@@ -20,7 +20,7 @@ export default function ProductForm() {
       if (productId) {
         const product = await getProductById(productId);
         setName(product.name);
-        setPrice(product.price); // Cambiado de "precio" a "price"
+        setPrice(product.precio); // Cambiado de "precio" a "price"
         setDescription(product.description);
         setStock(product.stock);
       }
@@ -34,9 +34,9 @@ export default function ProductForm() {
 
     try {
       if (productId) {
-        await updateProduct(productId, { name, price, description, stock });
+        await updateProduct(productId, { name, precio, description, stock });
       } else {
-        await createProduct({ name, price, description, stock }); // Cambiado de "precio" a "price"
+        await createProduct({ name, precio, description, stock }); // Cambiado de "precio" a "price"
       }
       router.push("/products"); // Redirige al usuario después de crear o actualizar el producto
     } catch (err: any) {
@@ -71,7 +71,7 @@ export default function ProductForm() {
               type="number"
               className="grow"
               placeholder="Product Price"
-              value={price}
+              value={precio}
               onChange={(e) => setPrice(Number(e.target.value))}
               required
             />
