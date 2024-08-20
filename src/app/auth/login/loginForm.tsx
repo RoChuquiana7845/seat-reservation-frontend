@@ -6,6 +6,7 @@ import { login } from "@/lib/auth";
 import Image from "next/image";
 import Button from "@/components/Button";
 import { useAuth } from '@/hooks/useAuth';
+import Cookies from 'js-cookie';
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -19,9 +20,18 @@ const LoginForm = () => {
     setError("");
 
     try {
-      await login({ email, password });
-      setIsAuthenticated(true);
-      router.push("/"); // Redirige al usuario después de iniciar sesión
+      const data = await login({ email, password });
+      
+      // Extraer el token JWT de la respuesta y guardarlo en una cookie
+      const jwt = data.jwt;
+      console.log(jwt);
+      if (jwt) {
+        Cookies.set('jwt_f', jwt, { expires: 1, secure: true, sameSite: 'Strict' }); // Configura la cookie según sea necesario
+        setIsAuthenticated(true);
+        router.push("/"); // Redirige al usuario después de iniciar sesión
+      } else {
+        setError("Login failed. No token received.");
+      }
     } catch (err: any) {
       setError("Login failed. Please try again.");
       console.error("Login error:", err);

@@ -1,7 +1,9 @@
+import ListProduct from "@/app/products/productList"
+
 export default function Home() {
   return (
     <div>
-      <h1>Welcome to the Seat Reservation App</h1>
+      <ListProduct/>
     </div>
   );
 }

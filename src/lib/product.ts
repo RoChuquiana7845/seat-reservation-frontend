@@ -22,3 +22,13 @@ export const getProductById = async (id: string) => {
     return axiosError.response?.data;
   }
 }
+
+export const createProduct = async (productData: { name: string, precio: number, description: string, stock: number }) => {
+  try {
+    const response = await api.post("/product", productData);
+    return response.data;
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    return axiosError.response?.data;
+  }
+};

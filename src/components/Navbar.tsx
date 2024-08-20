@@ -11,6 +11,7 @@ export default function Navbar() {
   const [initialCheck, setInitialCheck] = useState(false);
   const router = useRouter();
 
+  console.log(!isAuthenticated);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
