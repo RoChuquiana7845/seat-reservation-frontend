@@ -31,10 +31,18 @@ export default function CartListItems() {
     }
 
     return (
-        <div>
-            {cartItems.map((item) => (
-                <CartItemCard key={item.id} item={item} onRemove={handleRemoveItem} />
-            ))}
-        </div>
+        <>
+            {cartItems.length === 0 ? (
+                <div>No items in cart</div>
+            ) : (
+                cartItems.map((item) => (
+                    <CartItemCard
+                        key={item.id}
+                        item={item}
+                        onRemove={() => handleRemoveItem(item.id)}
+                    />
+                ))
+            )}
+        </>
     );
 }
